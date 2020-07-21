@@ -1,0 +1,23 @@
+
+
+  AND, OR, NOT, XOR
+
+
+  Operation   Boolean Operator   Bitwise Operator
+  AND           &&  (and)            &
+  OR            ||  (or)             |
+  NOT            !  (not)            ~
+  XOR              none!             ^
+
+  OR: "At least one or the other"
+
+  AND     True and True --> True
+          True and False --> False
+          False and False --> False
+
+  NOT     !(True) --> False
+            ~1    --> 0
+          !(False)--> True
+          ~0      --> 1
+
+  
