@@ -1,6 +1,6 @@
 
 
-decimal-base 10
+decimal-base10
 regular numbers 
 0-9
 
