@@ -5,6 +5,7 @@ import sys
 LDI = 0b10000010
 PRN = 0b01000111
 HLT = 0b00000001
+MUL = 0b10100010
 """
 LDI: load "immediate", store a value in a register, or "set this register to this value".
 PRN: a pseudo-instruction that prints the numeric value stored in a register.
@@ -33,22 +34,17 @@ class CPU:
         """Load a program into memory."""
 
         address = 0
+        filename = sys.argv[1]
 
-        # For now, we've just hardcoded a program:
-
-        program = [
-            # From print8.ls8
-            0b10000010,  # LDI R0,8
-            0b00000000,
-            0b00001000,
-            0b01000111,  # PRN R0
-            0b00000000,
-            0b00000001,  # HLT
-        ]
-
-        for instruction in program:
-            self.ram[address] = instruction
-            address += 1
+        with open(filename) as f:
+            for line in f:
+                string_value = line.split("#")[0].strip()
+                if string_value == "":
+                    continue
+                binary_value = int(string_value, 2)
+                print(binary_value)
+                self.ram[address] = binary_value
+                address += 1
 
     def alu(self, op, reg_a, reg_b):
         """ALU operations."""
@@ -56,6 +52,8 @@ class CPU:
         if op == "ADD":
             self.reg[reg_a] += self.reg[reg_b]
         # elif op == "SUB": etc
+        elif op == MUL:
+            self.reg[reg_a] *= self.reg[reg_b]
         else:
             raise Exception("Unsupported ALU operation")
 
@@ -92,14 +90,21 @@ class CPU:
             operand_b = self.ram_read(self.pc + 2)
 
             if IR == LDI:
-                self.reg[operand_a] = 1
+                self.reg[operand_a] = operand_b
                 self.pc += 3
 
-            if IR == PRN:
-                print(self.pc - 1)
+            elif IR == PRN:
+                print(self.reg[operand_a])
+                self.pc += 2
 
-            if IR == HLT:
+            elif IR == MUL:
+                self.alu(MUL, operand_a, operand_b)
+                self.pc += 3
+
+            elif IR == HLT:
                 running = False
 
-            self.pc += 1
+            else:
+                print(f" unknown instruction {IR} at address {self.pc}")
+                sys.exit()  # halts the python program wherever it is
 
