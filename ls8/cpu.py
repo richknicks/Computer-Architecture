@@ -65,6 +65,10 @@ class CPU:
         self.branchtable[JMP] = self.handle_jmp
         self.branchtable[JEQ] = self.handle_jeq
         self.branchtable[JNE] = self.handle_jne
+        self.branchtable[JGE] = self.operand_jge
+        self.branchtable[JGT] = self.operand_jgt
+        self.branchtable[JLE] = self.operand_jle
+        self.branchtable[JLT] = self.operand_jlt
 
     def handle_hlt(self):
         self.running = False
@@ -161,6 +165,30 @@ class CPU:
 
     # ------------------Sprint Challenge----------------------------#
 
+    def handle_cmp(self):
+        pass
+
+    def handle_jmp(self):
+        pass
+
+    def handle_jeq(self):
+        pass
+
+    def handle_jne(self):
+        pass
+
+    def handle_jgt(self):
+        pass
+
+    def handle_jge(self):
+        pass
+
+    def handle_jle(self):
+        pass
+
+    def handle_jlt(self):
+        pass
+
     def load(self):
         """Load a program into memory."""
         filename = sys.argv[1]
@@ -201,6 +229,20 @@ class CPU:
 
         elif op == "MUL":
             self.reg[reg_a] *= self.reg[reg_b]
+
+        elif op == "CMP":
+            if self.reg[reg_a] == self.reg[reg_b]:
+                self.fl[5] = 0
+                self.fl[6] = 0
+                self.fl[7] = 1
+            elif self.reg[reg_a] < self.reg[reg_b]:
+                self.fl[5] = 1
+                self.fl[6] = 0
+                self.fl[7] = 0
+            elif self.reg[reg_a] > self.reg[reg_b]:
+                self.fl[5] = 0
+                self.fl[6] = 1
+                self.fl[7] = 0
 
         else:
             raise Exception("Unsupported ALU operation")
