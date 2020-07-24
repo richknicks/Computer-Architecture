@@ -166,28 +166,47 @@ class CPU:
     # ------------------Sprint Challenge----------------------------#
 
     def handle_cmp(self):
-        pass
+        self.alu("CMP", self.ram[self.pc + 1], self.ram[self.pc + 2])
+        self.pc += 3
 
     def handle_jmp(self):
-        pass
+        self.pc = self.reg[self.ram[self.pc + 1]]
 
     def handle_jeq(self):
-        pass
+        if self.fl[7] == 1:
+            self.pc = self.reg[self.ram[self.pc + 1]]
+        else:
+            self.pc += 2
 
     def handle_jne(self):
-        pass
+        if self.fl[7] == 0:
+            self.pc = self.reg[self.ram[self.pc + 1]]
+        else:
+            self.pc += 2
 
     def handle_jgt(self):
-        pass
+        if self.fl[6] == 1:
+            self.pc = self.reg[self.pc + 1]
+        else:
+            self.pc += 2
 
     def handle_jge(self):
-        pass
+        if self.fl[6] == 1 or self.fl[7] == 1:
+            self.pc = self.ram[self.pc + 1]
+        else:
+            self.pc += 2
 
     def handle_jle(self):
-        pass
+        if self.fl[5] == 1 or self.fl[7] == 1:
+            self.pc = self.reg[self.pc + 1]
+        else:
+            self.pc += 2
 
     def handle_jlt(self):
-        pass
+        if self.fl[5] == 1:
+            self.pc = self.reg[self.pc + 1]
+        else:
+            self.pc += 2
 
     def load(self):
         """Load a program into memory."""
@@ -229,7 +248,7 @@ class CPU:
 
         elif op == "MUL":
             self.reg[reg_a] *= self.reg[reg_b]
-
+        # ------------------Sprint Challenge---------------------#
         elif op == "CMP":
             if self.reg[reg_a] == self.reg[reg_b]:
                 self.fl[5] = 0
