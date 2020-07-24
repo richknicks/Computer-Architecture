@@ -29,6 +29,7 @@ class CPU:
 
     def ram_write(self, value, address):
         self.ram[address] = value
+        return value
 
     def load(self):
         """Load a program into memory."""
@@ -42,7 +43,6 @@ class CPU:
                 if string_value == "":
                     continue
                 binary_value = int(string_value, 2)
-                print(binary_value)
                 self.ram[address] = binary_value
                 address += 1
 
@@ -52,7 +52,7 @@ class CPU:
         if op == "ADD":
             self.reg[reg_a] += self.reg[reg_b]
         # elif op == "SUB": etc
-        elif op == MUL:
+        elif op == "MUL":
             self.reg[reg_a] *= self.reg[reg_b]
         else:
             raise Exception("Unsupported ALU operation")
@@ -98,13 +98,13 @@ class CPU:
                 self.pc += 2
 
             elif IR == MUL:
-                self.alu(MUL, operand_a, operand_b)
+                self.reg[operand_a] *= self.reg[operand_b]
                 self.pc += 3
 
             elif IR == HLT:
                 running = False
 
             else:
-                print(f" unknown instruction {IR} at address {self.pc}")
+                print(f"Unknown instruction {IR} at address {self.pc}")
                 sys.exit()  # halts the python program wherever it is
 
