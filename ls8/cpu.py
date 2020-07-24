@@ -65,10 +65,10 @@ class CPU:
         self.branchtable[JMP] = self.handle_jmp
         self.branchtable[JEQ] = self.handle_jeq
         self.branchtable[JNE] = self.handle_jne
-        self.branchtable[JGE] = self.operand_jge
-        self.branchtable[JGT] = self.operand_jgt
-        self.branchtable[JLE] = self.operand_jle
-        self.branchtable[JLT] = self.operand_jlt
+        self.branchtable[JGE] = self.handle_jge
+        self.branchtable[JGT] = self.handle_jgt
+        self.branchtable[JLE] = self.handle_jle
+        self.branchtable[JLT] = self.handle_jlt
 
     def handle_hlt(self):
         self.running = False
