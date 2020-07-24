@@ -49,6 +49,7 @@ class CPU:
         self.running = True
         self.reg[7] = 0xF4
         self.sp = 7
+        self.fl = [0] * 8
         self.branchtable = {}
         self.branchtable[HLT] = self.handle_hlt
         self.branchtable[LDI] = self.handle_ldi
@@ -60,6 +61,10 @@ class CPU:
         self.branchtable[NOP] = self.handle_nop
         self.branchtable[POP] = self.handle_pop
         self.branchtable[PUSH] = self.handle_push
+        self.branchtable[CMP] = self.handle_cmp
+        self.branchtable[JMP] = self.handle_jmp
+        self.branchtable[JEQ] = self.handle_jeq
+        self.branchtable[JNE] = self.handle_jne
 
     def handle_hlt(self):
         self.running = False
@@ -136,8 +141,6 @@ class CPU:
         self.sp -= 1
         # self.sp = self.reg[7]
 
-        # print(self.sp)
-
         # this gets the address in the register for the top of stack
         top_of_stack_address = self.reg[self.sp]
 
@@ -155,6 +158,8 @@ class CPU:
         self.reg[self.sp] += 1
         # go to return address: set the pc to return address
         self.pc = return_address
+
+    # ------------------Sprint Challenge----------------------------#
 
     def load(self):
         """Load a program into memory."""
